@@ -1,0 +1,32 @@
+{
+  "name": "iwtool2",
+  "version": "1.0.0",
+  "description": "it-walker-tool for it-walker 2.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yyyjjj666/walker-library.git"
+  },
+  "keywords": [
+    "tool"
+  ],
+  "author": "it-walker",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yyyjjj666/walker-library/issues"
+  },
+  "homepage": "https://github.com/yyyjjj666/walker-library#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "colors-cli": "^1.0.17",
+    "ioredis": "^4.0.0",
+    "moment": "^2.22.2",
+    "mysql": "^2.16.0",
+    "mysql2": "^1.6.1",
+    "replaceall": "^0.1.6",
+    "sequelize": "^4.38.0"
+  }
+}
