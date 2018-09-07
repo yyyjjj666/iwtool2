@@ -25,18 +25,4 @@ let logConf = {
 //日志
 let log = new tool.logHelper(logConf.path, logConf.app_id, logConf.level, logConf.isRemote);
 
-let mysql = new tool.mysqlHelper({
-    username: 'edu',
-    password: 'edu_1234',
-    database: 'edu_system',
-    host: "39.106.27.231",
-    port: '703',
-    dialect: 'mysql'
-}, log);
 
-mysql.Add("INSERT INTO course_version (id,c_id) VALUES (@id,@c_id);", {
-    id: "7",
-    c_id: {a:1}
-}).then(res => {
-    console.log(res);
-}).catch(err=>console.log(err));

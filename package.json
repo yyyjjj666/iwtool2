@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yyyjjj666/walker-library.git"
+    "url": "git+https://github.com/yyyjjj666/iwtool2.git"
   },
   "keywords": [
     "tool"
@@ -16,9 +16,9 @@
   "author": "it-walker",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/yyyjjj666/walker-library/issues"
+    "url": "https://github.com/yyyjjj666/iwtool2/issues"
   },
-  "homepage": "https://github.com/yyyjjj666/walker-library#readme",
+  "homepage": "https://github.com/yyyjjj666/iwtool2#readme",
   "dependencies": {
     "axios": "^0.18.0",
     "colors-cli": "^1.0.17",
