@@ -131,21 +131,27 @@ let RebuildSql = (sql, obj) => {
         console.log(key);
         switch (Object.prototype.toString.call(obj[key])) {
             case '[object String]':
+                sql = replaceall(`@${key},`, `'${obj[key]}',`, sql);
                 sql = replaceall(`@${key}`, `'${obj[key]}'`, sql);
                 break;
             case '[object Object]':
+                sql = replaceall(`@${key},`, `'${JSON.stringify(obj[key])}',`, sql);
                 sql = replaceall(`@${key}`, `'${JSON.stringify(obj[key])}'`, sql);
                 break;
             case '[object Array]':
+                sql = replaceall(`@${key},`, `'${JSON.stringify(obj[key])}',`, sql);
                 sql = replaceall(`@${key}`, `'${JSON.stringify(obj[key])}'`, sql);
                 break;
             case '[object Undefined]':
+                sql = replaceall(`@${key},`, `NULL,`, sql);
                 sql = replaceall(`@${key}`, `NULL`, sql);
                 break;
             case '[object Null]':
+                sql = replaceall(`@${key},`, `NULL,`, sql);
                 sql = replaceall(`@${key}`, `NULL`, sql);
                 break;
             default:
+                sql = replaceall(`@${key},`, `${obj[key]},`, sql);
                 sql = replaceall(`@${key}`, `${obj[key]}`, sql);
                 break;
         }

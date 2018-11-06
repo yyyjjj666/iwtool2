@@ -23,30 +23,20 @@ class checkJson {
     ReturnParam(...key_list) {
         let object = {};
         key_list.forEach((items) => {
-            let item = "";
             let key = "";
             let check = 0;
+            let match;
             switch (items.length) {
                 case 1:
-                    [item] = items;
-                    item = key = item.trim();
+                    [key] = items;
+                    key = key.trim();
                     break;
                 case 2:
-                    switch (typeof (items[1])) {
-                        case typeof (0):
-                            [item, check] = items;
-                            item = key = item.trim();
-                            break;
-                        default:
-                            [item, key] = items;
-                            item = item.trim();
-                            key = key.trim();
-                            break;
-                    }
+                    [key, check] = items;
+                    key = key.trim();
                     break;
                 case 3:
-                    [item, key, check] = items;
-                    item = item.trim();
+                    [key, check, match] = items;
                     key = key.trim();
                     break;
                 default:
@@ -54,24 +44,30 @@ class checkJson {
             }
             switch (check) {
                 case 0://不查空，不过滤
-                    object[key] = this.json[item];
+                    object[key] = this.json[key];
                     break;
                 case 1://查空，不过滤
-                    object[key] = this.checkNullOrEmpty(item);
+                    object[key] = this.checkNullOrEmpty(key);
                     break;
                 case 2://查空，过滤
-                    object[key] = this.checkNullOrEmpty(item);
+                    object[key] = this.checkNullOrEmpty(key);
                     object[key] = this.excludeSpecial(object[key]);
                     if (object[key] === "") {
-                        throw new Error(`${item}值不能为空！`);
+                        throw new Error(`${key}值不能为空！`);
                     }
                     break;
                 default://不查空，不过滤
                     if (this.json[key]) {
                         object[key] = null;
                     } else
-                        object[key] = this.json[item];
+                        object[key] = this.json[key];
                     break;
+            }
+            if (match) {
+                let flag = object[key].match(match);
+                if (!flag) {
+                    throw new Error(`${key}格式错误！`);
+                }
             }
         });
         return object;

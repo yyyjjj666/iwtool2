@@ -1,28 +1,10 @@
 let tool = require('../src/index');
 
-var a = [1, 2, 3, 4];
-var b = [3, 4, 5, 6];
-console.log(a, b);
+let check = new tool.checkParam({mobile: "13773242411"});
 try {
-    console.log('交集', tool.array_opr.intersect(a, b));
-    console.log('差集', tool.array_opr.difference(a, b));
-    console.log('并集', tool.array_opr.union(a, b));
+    check.ReturnParam(["mobile", 1, /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/]);
 } catch (err) {
     console.log(err.message);
 }
-
-// tool.request_axios.getParam('https://fuju.doggadatachina.com/organization/get_org_list').then(result=>{
-//     console.log(result.data);
-// })
-
-let path = require('path');
-let logConf = {
-    app_id: "mini",
-    path: path.dirname(__dirname, '.'),//日志根目录
-    level: 4,//日志级别
-    isRemote: false//是否开启远程日志
-};
-//日志
-let log = new tool.logHelper(logConf.path, logConf.app_id, logConf.level, logConf.isRemote);
 
 
