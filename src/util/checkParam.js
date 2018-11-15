@@ -63,7 +63,7 @@ class checkJson {
                         object[key] = this.json[key];
                     break;
             }
-            if (match) {
+            if (match && check) {
                 let flag = object[key].match(match);
                 if (!flag) {
                     throw new Error(`${key}格式错误！`);

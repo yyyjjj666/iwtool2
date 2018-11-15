@@ -1,10 +1,16 @@
 let tool = require('../src/index');
 
-let check = new tool.checkParam({mobile: "13773242411"});
-try {
-    check.ReturnParam(["mobile", 1, /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/]);
-} catch (err) {
-    console.log(err.message);
-}
+
+let mysql = new tool.mysqlHelper({
+    username: 'edu',
+    password: 'edu_123456',
+    database: 'edu_system',
+    host: "47.92.91.50",
+    port: '700',
+    dialect: 'mysql',
+}, null);
+
+let a=(id) => { return mysql.Query(`SELECT * FROM \`app_user\` WHERE id='${id}'`);};
+ a(1);
 
 

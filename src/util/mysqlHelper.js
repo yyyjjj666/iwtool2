@@ -33,30 +33,12 @@ class myHelper {
         }
     }
 
-    Add(sql) {
-        return new Promise((resolve, reject) => {
-            this.Sequelize.query(sql).then((result) => {
-                resolve(result[1] > 0);
-            }).catch((err) => {
-                reject(err);
-            })
-        });
-    }
-
     Add(sql, obj) {
         return new Promise((resolve, reject) => {
-            this.Sequelize.query(RebuildSql(sql, obj)).then((result) => {
-                resolve(result[1] > 0);
-            }).catch((err) => {
-                reject(err);
-            })
-        });
-    }
-
-    Update(sql) {
-        return new Promise((resolve, reject) => {
+            if (obj)
+                sql = RebuildSql(sql, obj);
             this.Sequelize.query(sql).then((result) => {
-                resolve(result[0]["affectedRows"] > 0);
+                resolve(result[1] > 0);
             }).catch((err) => {
                 reject(err);
             })
@@ -65,18 +47,10 @@ class myHelper {
 
     Update(sql, obj) {
         return new Promise((resolve, reject) => {
-            this.Sequelize.query(RebuildSql(sql, obj)).then((result) => {
-                resolve(result[0]["affectedRows"] > 0);
-            }).catch((err) => {
-                reject(err);
-            })
-        });
-    }
-
-    Query(sql) {
-        return new Promise((resolve, reject) => {
+            if (obj)
+                sql = RebuildSql(sql, obj);
             this.Sequelize.query(sql).then((result) => {
-                resolve(result[0]);
+                resolve(result[0]["affectedRows"] > 0);
             }).catch((err) => {
                 reject(err);
             })
@@ -85,18 +59,10 @@ class myHelper {
 
     Query(sql, obj) {
         return new Promise((resolve, reject) => {
-            this.Sequelize.query(RebuildSql(sql, obj)).then((result) => {
-                resolve(result[0]);
-            }).catch((err) => {
-                reject(err);
-            })
-        });
-    }
-
-    QueryProcedure(sql) {
-        return new Promise((resolve, reject) => {
+            if (obj)
+                sql = RebuildSql(sql, obj);
             this.Sequelize.query(sql).then((result) => {
-                resolve(result);
+                resolve(result[0]);
             }).catch((err) => {
                 reject(err);
             })
@@ -105,7 +71,9 @@ class myHelper {
 
     QueryProcedure(sql, obj) {
         return new Promise((resolve, reject) => {
-            this.Sequelize.query(RebuildSql(sql, obj)).then((result) => {
+            if (obj)
+                sql = RebuildSql(sql, obj);
+            this.Sequelize.query(sql).then((result) => {
                 resolve(result);
             }).catch((err) => {
                 reject(err);
@@ -120,15 +88,14 @@ let checkObject = (sql, object, special) => {
     if (type === "[object Object]") {
         sql = filterLetter(sql, object, special);
     } else {
-        throw  new Error("参数格式不正确!");
+        throw new Error("参数格式不正确!");
     }
     return sql;
 };
 
 let RebuildSql = (sql, obj) => {
-    console.log(obj);
-    for (let key in obj) {
-        console.log(key);
+    let keys = Object.keys(obj).sort((a, b) => (b.length - a.length));
+    for (let key of keys) {
         switch (Object.prototype.toString.call(obj[key])) {
             case '[object String]':
                 sql = replaceall(`@${key},`, `'${obj[key]}',`, sql);
@@ -205,7 +172,7 @@ let filterRegExp = (param, RegExp) => {
         case '[object Undefined]':
             param = 'NULL';
             break;
-        case  '[object Null]':
+        case '[object Null]':
             param = 'NULL';
             break;
         case '[object Boolean]':
