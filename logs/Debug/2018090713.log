@@ -1,3 +1,0 @@
-[2018-09-07 13:41:48.4148] [mini] [Debug] [DB Executing (default): INSERT INTO course_version (id,c_id) VALUES ('7','{"a":1}');]
-[2018-09-07 13:42:24.4224] [mini] [Debug] [DB Executing (default): INSERT INTO course_version (id,c_id) VALUES ('7','{"a":1}');]
-[2018-09-07 13:42:24.4224] [mini] [Debug] [DB Executing (default): INSERT INTO course_version (id,c_id) VALUES (111,111)]

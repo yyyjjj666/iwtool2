@@ -15,7 +15,7 @@ npm install --save it-walker-tool
 ```
 let path = require('path');
 const logHelper = require('it-walker-tool').logHelper;
-let log = new logHelper(path.dirname(__dirname, '.'), 4); 
+let log = new logHelper(path.dirname(__dirname, '.'), 4);
 
 module.exports = {
     log: log
@@ -46,3 +46,21 @@ redis_get(key) 获取对应键的所有值
 checkNullOrEmpty(json,key) 判断json对象对应key的值是否有效
 checkIsExists(json,key) 判断json对象对应key的值是否存在
 ````
+
+mongoDB
+```
+let connStr = 'mongodb://username:password@ip:port/db';
+let mongoHelper = new tool.mongoHelper(connStr, log);
+
+mongoHelper.Schame({
+    ddcAppID: String,
+    ddcAppKey: String,
+    ddcAppName: String,
+    createdAt: String,
+}, "auth_config");
+
+let Model = mongoHelper.Model;
+Model.find({ddcAppID: "xxx"}).then(res => {
+    console.log(res);
+});
+```

@@ -69,6 +69,21 @@ class myHelper {
         });
     }
 
+    QuerySingle(sql, obj) {
+        return new Promise((resolve, reject) => {
+            if (obj)
+                sql = RebuildSql(sql, obj);
+            this.Sequelize.query(sql).then((result) => {
+                if (result.length)
+                    resolve(result[0][0]);
+                else
+                    resolve(null);
+            }).catch((err) => {
+                reject(err);
+            })
+        });
+    }
+
     QueryProcedure(sql, obj) {
         return new Promise((resolve, reject) => {
             if (obj)
@@ -83,102 +98,41 @@ class myHelper {
 
 }
 
-let checkObject = (sql, object, special) => {
-    let type = Object.prototype.toString.call(object);
-    if (type === "[object Object]") {
-        sql = filterLetter(sql, object, special);
-    } else {
-        throw new Error("参数格式不正确!");
-    }
-    return sql;
-};
 
 let RebuildSql = (sql, obj) => {
     let keys = Object.keys(obj).sort((a, b) => (b.length - a.length));
+    let type = ['[object String]', '[object Object]', '[object Array]', '[object Undefined]', '[object Null]'];
+    let func = [
+        (obj, key) => replaceKey(obj, key, sql),
+        (obj, key) => replaceKeyJSON(obj, key, sql),
+        (obj, key) => replaceKeyJSON(obj, key, sql),
+        (obj, key) => replaceKeyNull(obj, key, sql),
+        (obj, key) => replaceKeyNull(obj, key, sql)];
     for (let key of keys) {
-        switch (Object.prototype.toString.call(obj[key])) {
-            case '[object String]':
-                sql = replaceall(`@${key},`, `'${obj[key]}',`, sql);
-                sql = replaceall(`@${key}`, `'${obj[key]}'`, sql);
-                break;
-            case '[object Object]':
-                sql = replaceall(`@${key},`, `'${JSON.stringify(obj[key])}',`, sql);
-                sql = replaceall(`@${key}`, `'${JSON.stringify(obj[key])}'`, sql);
-                break;
-            case '[object Array]':
-                sql = replaceall(`@${key},`, `'${JSON.stringify(obj[key])}',`, sql);
-                sql = replaceall(`@${key}`, `'${JSON.stringify(obj[key])}'`, sql);
-                break;
-            case '[object Undefined]':
-                sql = replaceall(`@${key},`, `NULL,`, sql);
-                sql = replaceall(`@${key}`, `NULL`, sql);
-                break;
-            case '[object Null]':
-                sql = replaceall(`@${key},`, `NULL,`, sql);
-                sql = replaceall(`@${key}`, `NULL`, sql);
-                break;
-            default:
-                sql = replaceall(`@${key},`, `${obj[key]},`, sql);
-                sql = replaceall(`@${key}`, `${obj[key]}`, sql);
-                break;
+        let index = type.indexOf(Object.prototype.toString.call(obj[key]));
+        if (index !== -1) {
+            sql = func[index](obj, key);
+        } else {
+            sql = replaceKey(obj, key, sql);
         }
     }
     return sql;
 };
 
-let filterLetter = (sql, param, special) => {
-    if (special) {
-        for (let key in param) {
-            let RegExp = special[`${key}`];
-            let nparam = filterRegExp(param[key], RegExp);
-            sql = sql.replace(`@${key}`, nparam);
-        }
-    } else {
-        for (let key in param) {
-            let nparam = filterRegExp(param[key]);
-            sql = sql.replace(`@${key}`, nparam);
-        }
-    }
+let replaceKey = (obj, key, sql) => {
+    sql = replaceall(`@${key},`, `'${obj[key]}',`, sql);
+    sql = replaceall(`@${key}`, `'${obj[key]}'`, sql);
+    return sql;
+};
+let replaceKeyNull = (obj, key, sql) => {
+    sql = replaceall(`@${key},`, `NULL,`, sql);
+    sql = replaceall(`@${key}`, `NULL`, sql);
+    return sql;
+};
+let replaceKeyJSON = (obj, key, sql) => {
+    sql = replaceall(`@${key},`, `'${JSON.stringify(obj[key])}',`, sql);
+    sql = replaceall(`@${key}`, `'${JSON.stringify(obj[key])}'`, sql);
     return sql;
 };
 
-let filterRegExp = (param, RegExp) => {
-    switch (Object.prototype.toString.call(param)) {
-        case '[object Number]':
-            param = param.toString();
-            break;
-        case '[object Object]':
-            param = JSON.stringify(param);
-            param = `'${param}'`;
-            break;
-        case '[object Array]':
-            param = JSON.stringify(param);
-            param = `'${param}'`;
-            break;
-        case '[object String]':
-            switch (Object.prototype.toString.call(RegExp)) {
-                case '[object RegExp]':
-                    param = param.replace(RegExp, '');
-                    break;
-                case '[object Boolean]':
-                    break;
-                default:
-                    param = param.replace(/[`'"\\/\b\f\n\r\t]/g, '');
-                    break;
-            }
-            param = `'${param}'`;
-            break;
-
-        case '[object Undefined]':
-            param = 'NULL';
-            break;
-        case '[object Null]':
-            param = 'NULL';
-            break;
-        case '[object Boolean]':
-            param = param.toString();
-            break;
-    }
-    return param;
-};
 module.exports = myHelper;
