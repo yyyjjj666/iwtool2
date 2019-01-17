@@ -23,47 +23,26 @@ class checkJson {
     ReturnParam(...key_list) {
         let object = {};
         key_list.forEach((items) => {
-            let key = "";
-            let check = 0;
+            let key;
+            let check;
             let match;
-            switch (items.length) {
-                case 1:
-                    [key] = items;
-                    key = key.trim();
-                    break;
-                case 2:
-                    [key, check] = items;
-                    key = key.trim();
-                    break;
-                case 3:
-                    [key, check, match] = items;
-                    key = key.trim();
-                    break;
-                default:
-                    throw new Error(`${items}格式错误！`);
+            [key, check, match] = items;
+            key = key.trim();
+            let handle = [
+                () => {
+                    this.json[key] ? object[key] = this.json[key] : null
+                },
+                () => {
+                    object[key] = this.checkNullOrEmpty(key)
+                }, () => {
+                    object[key] = this.excludeSpecial(this.checkNullOrEmpty(key))
+                }];
+            if (handle[check]) {
+                handle[check]();
+            } else {
+                object[key] = this.json[key] ? this.json[key] : null
             }
-            switch (check) {
-                case 0://不查空，不过滤
-                    object[key] = this.json[key];
-                    break;
-                case 1://查空，不过滤
-                    object[key] = this.checkNullOrEmpty(key);
-                    break;
-                case 2://查空，过滤
-                    object[key] = this.checkNullOrEmpty(key);
-                    object[key] = this.excludeSpecial(object[key]);
-                    if (object[key] === "") {
-                        throw new Error(`${key}值不能为空！`);
-                    }
-                    break;
-                default://不查空，不过滤
-                    if (this.json[key]) {
-                        object[key] = null;
-                    } else
-                        object[key] = this.json[key];
-                    break;
-            }
-            if (match && check) {
+            if (match && object[key]) {
                 let flag = object[key].match(match);
                 if (!flag) {
                     throw new Error(`${key}格式错误！`);
