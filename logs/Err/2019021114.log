@@ -1,0 +1,4 @@
+[2019-02-11 14:04:31.431] [x] [Err] [执行事务失败,INSERT INTO test (`name`) VALUES ('3'),不符合要求]
+[2019-02-11 14:05:05.55] [x] [Err] [执行事务失败,INSERT INTO test (`name`) VALUES ('3'),不符合要求]
+[2019-02-11 14:06:03.63] [x] [Err] [执行事务失败,INSERT INTO test (`name`) VALUES ('3'),不符合要求]
+[2019-02-11 14:06:13.613] [x] [Err] [执行事务失败,INSERT INTO test (`name`) VALUES ('3'),不符合要求]

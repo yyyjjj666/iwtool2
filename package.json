@@ -1,6 +1,6 @@
 {
   "name": "iwtool2",
-  "version": "1.3.2",
+  "version": "1.4.1",
   "description": "it-walker-tool for it-walker 2.0",
   "main": "src/index.js",
   "scripts": {
@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/yyyjjj666/iwtool2#readme",
   "dependencies": {
+    "async": "^2.6.1",
     "axios": "^0.18.0",
     "colors-cli": "^1.0.17",
     "ioredis": "^4.0.0",

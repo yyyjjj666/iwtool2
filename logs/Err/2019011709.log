@@ -1,2 +1,0 @@
-[2019-01-17 09:37:25.3725] [x] [Err] [数据库断开]
-[2019-01-17 09:37:25.3725] [x] [Err] [mongo failed to connect to server [ip:27017] on first connect [MongoNetworkError: getaddrinfo ENOTFOUND ip ip:27017]]
