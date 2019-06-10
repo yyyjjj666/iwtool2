@@ -30,7 +30,7 @@ class checkJson {
             key = key.trim();
             let handle = [
                 () => {
-                    this.json[key] ? object[key] = this.json[key] : null
+                    object[key] = this.json[key] ? this.json[key] : null
                 },
                 () => {
                     object[key] = this.checkNullOrEmpty(key)
@@ -40,10 +40,10 @@ class checkJson {
             if (handle[check]) {
                 handle[check]();
             } else {
-                object[key] = this.json[key] ? this.json[key] : null
+                this.json[key] !== undefined ? object[key] = this.json[key] : null
             }
             if (match && object[key]) {
-                let flag = object[key].match(match);
+                let flag = match.test(object[key]);
                 if (!flag) {
                     throw new Error(`${key}格式错误！`);
                 }

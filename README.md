@@ -89,3 +89,41 @@ list.push([`INSERT INTO test (\`name\`) VALUES (@test)`, {test: "5"}]);
 * update a.changedRows>0
 * */
 ```
+
+```
+1.5.1
+新增 mongoDBHelper
+```
+```
+let newLog = new resDef.writeLog(req, res, log);
+newLog.LogErrOrInfo(ActionCode.IN);
+return newLog.LogErrOrInfo(ActionCode.ParamCheck, ErrorCode.ParamError, err);
+return newLog.LogErrOrInfo(ActionCode.DBRunning, ErrorCode.DBError, err);
+return newLog.LogErrOrInfo(ActionCode.CodeRunning, ErrorCode.OtherError, err);
+return newLog.LogErrOrInfo(ActionCode.OUT, ErrorCode.Success, null, {});
+return newLog.LogErrOrInfo(ActionCode.OUT, ErrorCode.Failure, new Error('xxxx'), {});
+```
+
+|错误代号 | 错误描述|
+|:---|:---|
+|Success		|操作成功|
+|Failure		|操作失败|
+|ParamError		|缺少参数/参数格式错误|
+|BizParamError	|	业务参数异常|
+|AuthError		|接口授权信息异常|
+|PermissionError|		权限不足|
+|TokenError		|token异常|
+|SignatureError	|	signature异常|
+|DBError		|数据库异常|
+|OutsideApiError|		外部接口访问异常|
+|OtherError		|其他异常|
+
+|行动代号 | 行动描述|
+|:---|:---|
+|IN|进入程序|
+|ParamCheck|参数检查|
+|CodeRunning|主程序运行|
+|DBRunning|数据库程序执行|
+|OUT|退出程序|
+		
+
